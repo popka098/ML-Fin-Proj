@@ -8,6 +8,8 @@ import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.main_router import router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -20,6 +22,8 @@ SessionDep = Annotated[Session, Depends(get_session)]
 app = FastAPI(
     lifespan=lifespan,
 )
+
+app.include_router(router)
 
 origins = [
     "http://localhost:5173",
@@ -34,7 +38,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/", summary="Main root")
+@app.get("/api", summary="Main root")
 async def root():
     return {"message": "Hello World"}
 

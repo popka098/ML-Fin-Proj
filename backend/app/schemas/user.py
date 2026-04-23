@@ -12,9 +12,10 @@ class UserCreate(SQLModel):
     )
 
 class UserUpdate(UserCreate):
-    ...
+    tokens : int = Field()
 
 class UserRead(UserCreate):
     id : int
     is_staff : bool
     is_admin : bool
+    tokens : int

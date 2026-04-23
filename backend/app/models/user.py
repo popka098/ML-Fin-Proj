@@ -18,3 +18,4 @@ class User(BaseModel, table=True):
     is_admin : bool = Field(
         default=False,
     )
+    tokens : int = Field(default=50)
