@@ -6,8 +6,8 @@ from auth.manager import UserManager
 from auth.backend import auth_backend
 from auth.db import get_user_db
 
-def get_user_manager(user_db=Depends(get_user_db)):
-    yield
+async def get_user_manager(user_db=Depends(get_user_db)):
+    yield UserManager(user_db)
 
 fastapi_users = FastAPIUsers(
     get_user_manager,

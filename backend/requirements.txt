@@ -3,3 +3,5 @@ sqlmodel
 alembic
 fastapi-users[sqlalchemy]
 python-dotenv
+aiosqlite
+greenlet

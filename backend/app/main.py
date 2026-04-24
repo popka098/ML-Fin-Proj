@@ -8,11 +8,12 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.main_router import router
+from api.auth import router as auth_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()
+    await init_db()
     yield
 
 app = FastAPI(
@@ -20,6 +21,7 @@ app = FastAPI(
 )
 
 app.include_router(router)
+app.include_router(auth_router)
 
 origins = [
     "http://localhost:5173",
@@ -36,7 +38,7 @@ app.add_middleware(
 
 
 @app.get("/api", summary="Main root")
-async def root():
+def root():
     return {"message": "Hello World"}
 
 if __name__ == "__main__":
