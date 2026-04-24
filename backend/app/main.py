@@ -1,21 +1,19 @@
 from typing import Annotated
 from contextlib import asynccontextmanager
 
-from db.base import init_db, close_db, get_session
-from sqlmodel import Session
+from app.db.inti_db import init_db
 
 import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.main_router import router
+from app.api.main_router import router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
     yield
-    close_db()
 
 SessionDep = Annotated[Session, Depends(get_session)]
 
@@ -37,6 +35,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/api", summary="Main root")
 async def root():

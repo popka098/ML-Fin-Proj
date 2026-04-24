@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from sqlmodel import Session, select
-from db.base import get_session
+from app.db.base import get_session
 
-from models.user import User
-from schemas.user import UserCreate, UserRead, UserUpdate
+from app.models.user import User
+from app.schemas.user import UserCreate, UserRead, UserUpdate
 
 from typing import Annotated
 

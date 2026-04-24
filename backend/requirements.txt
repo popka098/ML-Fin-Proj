@@ -1,3 +1,4 @@
 fastapi[standard]
 sqlmodel
 alembic
+fastapi-users[sqlalchemy]
