@@ -1,21 +1,19 @@
 from typing import Annotated
 from contextlib import asynccontextmanager
 
-from app.db.inti_db import init_db
+from db.inti_db import init_db
 
 import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.main_router import router
+from api.main_router import router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
     yield
-
-SessionDep = Annotated[Session, Depends(get_session)]
 
 app = FastAPI(
     lifespan=lifespan,
