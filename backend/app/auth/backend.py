@@ -4,7 +4,11 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 
-SECRET = "SUPER_SECRET"
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+SECRET = os.getenv("SUPER_SECRET")
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
