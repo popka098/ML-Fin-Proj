@@ -1,11 +1,11 @@
+from dotenv import load_dotenv
+import os
+
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
     JWTStrategy,
 )
-
-from dotenv import load_dotenv
-import os
 
 load_dotenv()
 SECRET = os.getenv("SUPER_SECRET")
