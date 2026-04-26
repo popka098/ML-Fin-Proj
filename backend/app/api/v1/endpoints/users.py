@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
-from auth.users import fastapi_users
+from auth.models import User
+from api.deps import current_user
 
 router = APIRouter(prefix="/users")
-current_user = fastapi_users.current_user()
 
 @router.get("/me")
-def get_me(user=Depends(current_user)):
+def get_me(user: User = Depends(current_user)):
     return user
