@@ -5,3 +5,8 @@ fastapi-users[sqlalchemy]
 python-dotenv
 aiosqlite
 greenlet
+numpy
+pandas
+scikit-learn
+joblib
+sentence-transformers
