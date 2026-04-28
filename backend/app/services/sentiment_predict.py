@@ -14,6 +14,6 @@ IDX2WORD = {
 
 model = joblib.load(MODELS_DIR / "sentiment_model.pkl")
 
-def sentiment_predict(text:str):
+def sentiment_predict(text:str) -> tuple[int, str]:
     prediction = model.predict(pd.Series([text]))[0]
     return (prediction, IDX2WORD[prediction])

@@ -11,7 +11,7 @@ VER = 3
 model = joblib.load(MODELS_DIR / f"topic_model{VER}.pkl")
 label_encoder = joblib.load(MODELS_DIR / "label_encoder_topic.pkl")
 
-def sentiment_predict(text:str):
+def sentiment_predict(text:str) -> tuple[int, str]:
     prediction = model.predict(pd.Series([text]))[0]
     label = label_encoder.inverse_transform([prediction])[0]
     return (prediction, label)
