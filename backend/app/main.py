@@ -10,7 +10,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.main_router import router
 from api.auth import router as auth_router
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
