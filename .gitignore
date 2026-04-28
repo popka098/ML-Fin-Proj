@@ -1,3 +1,7 @@
+# Models
+models/*.pkl
+!models/label_encoder_topic.pkl
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
