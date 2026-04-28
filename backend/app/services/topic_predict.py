@@ -11,9 +11,31 @@ sys.modules['__main__'].EmbeddingTransformer = EmbeddingTransformer
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 MODELS_DIR = BASE_DIR / "models"
 
-VER = 3
+VER = ""
 model = joblib.load(MODELS_DIR / f"topic_model{VER}.pkl")
-label_encoder = joblib.load(MODELS_DIR / "label_encoder_topic.pkl")
+
+IDX2WORD = {
+    0: 'alt.atheism',
+    1: 'comp.graphics',
+    2: 'comp.os.ms-windows.misc',
+    3: 'comp.sys.ibm.pc.hardware',
+    4: 'comp.sys.mac.hardware',
+    5: 'comp.windows.x',
+    6: 'misc.forsale',
+    7: 'rec.autos',
+    8: 'rec.motorcycles',
+    9: 'rec.sport.baseball',
+    10: 'rec.sport.hockey',
+    11: 'sci.crypt',
+    13: 'sci.med',
+    12: 'sci.electronics',
+    14: 'sci.space',
+    15: 'soc.religion.christian',
+    16: 'talk.politics.guns',
+    17: 'talk.politics.mideast',
+    18: 'talk.politics.misc',
+    19: 'talk.religion.misc',
+}
 
 def clean_text(x):
     x = str(x)
@@ -29,11 +51,7 @@ def clean_text(x):
 def topic_predict(text:str):
     text = clean_text(text)
     prediction = model.predict(pd.Series([text]))
-    label = label_encoder.inverse_transform([int(prediction[0])])[0]
     return {
         "pred_id": int(prediction[0]),
-        "pred_label": label,
+        "pred_label": IDX2WORD[int(prediction[0])],
     }
-
-print(type(model))
-print(model)

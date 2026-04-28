@@ -21,7 +21,7 @@ def get_topic(text: str):
 @router.get("/all")
 def get_all_preds(text: str):
     res_sentiment = sentiment_predict(text)
-    res_topic = sentiment_predict(text)
+    res_topic = topic_predict(text)
     return {
         "sentiment_id": res_sentiment["pred_id"],
         "sentiment_label": res_sentiment["pred_label"],
