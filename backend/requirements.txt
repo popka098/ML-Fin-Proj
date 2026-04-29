@@ -1,7 +1,8 @@
 fastapi[standard]
+python-jose[cryptography]
+passlib[argon2]
 sqlmodel
 alembic
-fastapi-users[sqlalchemy]
 python-dotenv
 aiosqlite
 greenlet

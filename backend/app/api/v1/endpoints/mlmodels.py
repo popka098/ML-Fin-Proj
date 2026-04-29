@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from auth.models import User
-from api.deps import current_user
+from api.deps import get_current_user
 
 from services.embeddingtransformer import EmbeddingTransformer
 from services.sentiment_predict import sentiment_predict

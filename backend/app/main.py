@@ -1,8 +1,6 @@
 from typing import Annotated
 from contextlib import asynccontextmanager
 
-from db.inti_db import init_db
-
 import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,7 +10,6 @@ from api.auth import router as auth_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_db()
     yield
 
 app = FastAPI(
