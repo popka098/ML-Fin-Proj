@@ -8,7 +8,7 @@ from services.embeddingtransformer import EmbeddingTransformer
 from services.sentiment_predict import sentiment_predict
 from services.topic_predict import topic_predict
 
-router = APIRouter(prefix="/mlmomdels")
+router = APIRouter(prefix="/mlmomdels", tags=["mlmodels"])
 SENTIMENT_REQUEST_PRICE = 1
 TOPIC_REQUEST_PRICE = 1
 
