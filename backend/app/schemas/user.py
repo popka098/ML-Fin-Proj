@@ -10,3 +10,8 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: str
     password: str
+
+class UserRead(BaseModel):
+    email: str
+    is_active: bool
+    is_admin: bool

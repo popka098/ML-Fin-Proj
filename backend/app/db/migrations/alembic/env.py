@@ -11,6 +11,7 @@ from alembic import context
 
 from sqlmodel import SQLModel
 from models.user import User
+from models.refresh_token import RefreshToken
 # from app.models.user import User
 # import app.models
 

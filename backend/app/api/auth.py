@@ -1,3 +1,5 @@
+import datetime as dt
+
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -5,8 +7,15 @@ from sqlalchemy import select
 
 from api.deps import get_db
 from models.user import User
+from models.refresh_token import RefreshToken
 from schemas.user import UserCreate, UserLogin
-from core.security import hash_password, verify_password, create_access_token
+from core.security import (
+    hash_password,
+    verify_password,
+    create_access_token,
+    create_refresh_token,
+    REFRESH_TOKEN_EXPIRE_DAYS
+)
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -53,6 +62,54 @@ async def login(
     if not user or not verify_password(password, user.hashed_password):
         raise HTTPException(401, "Invalid credentials")
 
-    token = create_access_token({"sub": str(user.id)})
+    access_token = create_access_token({"sub": str(user.id)})
+    refresh_token = create_refresh_token()
 
-    return {"access_token": token, "token_type": "bearer"}
+    db.add(RefreshToken(
+        user_id=user.id,
+        token=refresh_token,
+        expires_at=dt.datetime.now(dt.timezone.utc) + dt.timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    ))
+    await db.commit()
+
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+    }
+
+@router.get("/refresh")
+async def refresh(
+    refresh_token: str,
+    db: AsyncSession = Depends(get_db)
+):
+    result = await db.execute(
+        select(RefreshToken).where(RefreshToken.token == refresh_token)
+    )
+    token_entry = result.scalar_one_or_none()
+
+    if not token_entry:
+        raise HTTPException(401, "Invalid refresh token")
+
+    if token_entry.expires_at < dt.datetime.now(dt.timezone.utc):
+        raise HTTPException(401, "Refresh token expired")
+
+    access_token = create_access_token({"sub": str(token_entry.user_id)})
+
+    return {"access_token": access_token}
+
+@router.get("/logout")
+async def logout(
+    refresh_token: str,
+    db: AsyncSession = Depends(get_db)
+):
+    result = await db.execute(
+        select(RefreshToken).where(RefreshToken.token == refresh_token)
+    )
+    token_entry = result.scalar_one_or_none()
+
+    if token_entry:
+        await db.delete(token_entry)
+        await db.commit()
+    
+    return {"msg": "Logged out successfully"}
