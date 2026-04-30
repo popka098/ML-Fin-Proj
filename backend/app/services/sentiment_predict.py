@@ -20,6 +20,6 @@ model = joblib.load(MODELS_DIR / "sentiment_model.pkl")
 def sentiment_predict(text:str):
     prediction = model.predict(pd.Series([text]))
     return {
-        "pred_id": int(prediction[0]),
-        "pred_label": IDX2WORD[int(prediction[0])],
+        "sentiment_pred_id": int(prediction[0]),
+        "sentiment_pred_label": IDX2WORD[int(prediction[0])],
     }

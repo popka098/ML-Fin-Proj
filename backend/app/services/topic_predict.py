@@ -52,6 +52,6 @@ def topic_predict(text:str):
     text = clean_text(text)
     prediction = model.predict(pd.Series([text]))
     return {
-        "pred_id": int(prediction[0]),
-        "pred_label": IDX2WORD[int(prediction[0])],
+        "topic_pred_id": int(prediction[0]),
+        "topic_pred_label": IDX2WORD[int(prediction[0])],
     }
