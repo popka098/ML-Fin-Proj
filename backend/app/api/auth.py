@@ -1,6 +1,6 @@
 import datetime as dt
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -78,11 +78,12 @@ async def login(
         "token_type": "bearer",
     }
 
-@router.get("/refresh")
+@router.post("/refresh")
 async def refresh(
-    refresh_token: str,
+    request: Request,
     db: AsyncSession = Depends(get_db)
 ):
+    refresh_token = request.cookies.get("refresh_token")
     result = await db.execute(
         select(RefreshToken).where(RefreshToken.token == refresh_token)
     )
