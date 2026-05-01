@@ -1,6 +1,7 @@
+# api/auth.py
 import datetime as dt
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -48,6 +49,7 @@ async def register(
 
 @router.post("/login")
 async def login(
+    response: Response,
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db)
 ):
@@ -72,18 +74,30 @@ async def login(
     ))
     await db.commit()
 
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        secure=False, #!!! True в прод
+        samesite="lax",
+    )
+
     return {
         "access_token": access_token,
-        "refresh_token": refresh_token,
         "token_type": "bearer",
     }
 
 @router.post("/refresh")
 async def refresh(
     request: Request,
+    response: Response,
     db: AsyncSession = Depends(get_db)
 ):
     refresh_token = request.cookies.get("refresh_token")
+
+    if not refresh_token:
+        raise HTTPException(401, "No refresh token")
+
     result = await db.execute(
         select(RefreshToken).where(RefreshToken.token == refresh_token)
     )
@@ -92,25 +106,48 @@ async def refresh(
     if not token_entry:
         raise HTTPException(401, "Invalid refresh token")
 
-    if token_entry.expires_at < dt.datetime.now(dt.timezone.utc):
+    if token_entry.expires_at.replace(tzinfo=dt.timezone.utc) < dt.datetime.now(dt.timezone.utc):
         raise HTTPException(401, "Refresh token expired")
+
+    await db.delete(token_entry)
+
+    new_refresh_token = create_refresh_token()
+    db.add(RefreshToken(
+        user_id=token_entry.user_id,
+        token=new_refresh_token,
+        expires_at=dt.datetime.now(dt.timezone.utc) + dt.timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    ))
+
+    await db.commit()
+
+    response.set_cookie(
+        key="refresh_token",
+        value=new_refresh_token,
+        httponly=True,
+        secure=False, #!!! True в прод
+        samesite="lax",
+    )
 
     access_token = create_access_token({"sub": str(token_entry.user_id)})
 
     return {"access_token": access_token}
 
-@router.get("/logout")
+@router.post("/logout")
 async def logout(
-    refresh_token: str,
+    request: Request,
+    response: Response,
     db: AsyncSession = Depends(get_db)
 ):
-    result = await db.execute(
-        select(RefreshToken).where(RefreshToken.token == refresh_token)
-    )
-    token_entry = result.scalar_one_or_none()
+    refresh_token = request.cookies.get("refresh_token")
+    if refresh_token:
+        result = await db.execute(
+            select(RefreshToken).where(RefreshToken.token == refresh_token)
+        )
+        token_entry = result.scalar_one_or_none()
 
-    if token_entry:
-        await db.delete(token_entry)
-        await db.commit()
-    
-    return {"msg": "Logged out successfully"}
+        if token_entry:
+            await db.delete(token_entry)
+            await db.commit()
+    response.delete_cookie("refresh_token")
+
+    return {"msg": "Logged out"}
