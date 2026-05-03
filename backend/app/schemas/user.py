@@ -15,3 +15,4 @@ class UserRead(BaseModel):
     email: str
     is_active: bool
     is_admin: bool
+    crystals: int

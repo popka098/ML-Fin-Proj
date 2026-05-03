@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { login as apiLogin, getMe, logout } from "../api/auth";
+import { apiLogin as apiLogin, getMe, logout } from "../api/auth";
 import { api, setAccessToken } from "../api/client";
 
 type User = {
@@ -43,10 +43,19 @@ export function AuthProvider({ children }: any) {
     const login = async (email: string, password: string) => {
         const res = await apiLogin(email, password);
 
+        // !!!
+        console.log("ACCESS TOKEN:", res.access_token);
+
         setAccessToken(res.access_token);
 
         const me = await getMe();
+
+        // !!!
+        console.log("ME:", me);
+
         setUser(me);
+
+        return me;
     };
 
     const logout = async () => {
