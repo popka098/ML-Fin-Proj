@@ -22,7 +22,10 @@ export default function Header() {
                     ) : user ? (
                         <>
                             <span style={{ marginRight: "10px" }}>
-                                {user.email}
+                                💎 {user.crystals}
+                            </span>
+                            <span style={{ marginRight: "10px" }}>
+                                <Link to="/me">{user.email}</Link>
                             </span>
                             <button onClick={handleLogout}>Logout</button>
                         </>

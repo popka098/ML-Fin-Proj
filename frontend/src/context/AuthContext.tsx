@@ -5,6 +5,7 @@ import { api, setAccessToken } from "../api/client";
 type User = {
     id: number;
     email: string;
+    crystals: number;
 };
 
 type AuthContextType = {
@@ -12,6 +13,7 @@ type AuthContextType = {
     loading: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => void;
+    refreshUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -66,12 +68,18 @@ export function AuthProvider({ children }: any) {
         setAccessToken(null as any);
     };
 
+    const refreshUser = async () => {
+        const me = await getMe();
+        setUser(me);
+    };
+
     return (
         <AuthContext.Provider value={{
             user,
             loading,
             login,
-            logout
+            logout,
+            refreshUser,
         }}>
             {children}
         </AuthContext.Provider>
