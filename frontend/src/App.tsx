@@ -3,33 +3,39 @@ import Index from './pages/Index';
 import Login from "./pages/Login";
 import Me from './pages/Me';
 import Register from './pages/Register';
+
 import ProtectedRoute from './components/ProtectedRoute';
+import Header from './components/Header';
+
 import './App.css'
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <ProtectedRoute>
-                            <Index />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route
-                    path="/me"
-                    element={
-                        <ProtectedRoute>
-                            <Me />
-                        </ProtectedRoute>
-                    }
-                />
-            </Routes>
-        </BrowserRouter>
+        <>
+            <BrowserRouter>
+                <Header />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <Index />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/me"
+                        element={
+                            <ProtectedRoute>
+                                <Me />
+                            </ProtectedRoute>
+                        }
+                    />
+                </Routes>
+            </BrowserRouter>
+        </>
     );
 }
 
