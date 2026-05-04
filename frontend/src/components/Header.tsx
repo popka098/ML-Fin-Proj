@@ -11,36 +11,42 @@ export default function Header() {
     };
 
     return (
-        <header style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
-            <nav style={{ display: "flex", justifyContent: "space-between" }}>
-                <div>
-                    <Link to="/">Home</Link>
-                </div>
+        <header className="border-b">
+            <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+
+                <Link to="/" className="font-bold text-lg">App</Link>
+
                 <div>
                     {loading ? (
                         <span>Loading...</span>
                     ) : user ? (
-                        <>
-                            <span style={{ marginRight: "10px" }}>
+                        <div className="flex items-center gap-4">
+
+                            <div className="text-sm text-gray-600">
                                 💎 {user.crystals}
-                            </span>
-                            <span style={{ marginRight: "10px" }}>
+                            </div>
+
+                            <div className="text-sm">
                                 <Link to="/me">{user.email}</Link>
-                            </span>
-                            <button onClick={handleLogout}>Logout</button>
-                        </>
+                            </div>
+
+                            <button onClick={handleLogout} className="text-red-500 hover:underline">
+                                Logout
+                            </button>
+
+                        </div>
                     ) : (
-                        <>
-                            <Link to="/login" style={{ marginRight: "10px" }}>
+                        <div className="flex gap-4">
+                            <Link to="/login" className="hover:underline">
                                 Login
                             </Link>
-                            <Link to="/register">
+                            <Link to="/register" className="hover:underline">
                                 Register
                             </Link>
-                        </>
+                        </div>
                     )}
                 </div>
-            </nav>
+            </div>
         </header>
     );
 }

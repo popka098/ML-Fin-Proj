@@ -29,10 +29,11 @@ export default function Index() {
     };
 
     return (
-        <div>
-            <h1>Text analysis</h1>
+        <div className="max-w-3xl mx-auto mt-10 px-4">
+            <h1 className="text-3xl font-bold mb-6">Text analysis</h1>
 
             <textarea
+                className="w-full resize-none p-4 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={5}
                 placeholder="Enter text..."
                 value={text}
@@ -43,18 +44,24 @@ export default function Index() {
                 }}
             />
             <br />
-            <button onClick={handleAnalyze} disabled={loading}>
+            <button 
+                onClick={handleAnalyze} 
+                disabled={loading}
+                className="mt-4 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition disabled:opacity-50"
+            >
                 {loading ? "Analyzing" : "Analyze"}
             </button>
 
-            {error && <div style={{ color: "red" }}>{error}</div>}
+            {error && <div className="mt-4 text-red-500">{error}</div>}
 
             {result && (
-                <div>
-                    <h3>Result:</h3>
-                    <pre>
-                        {JSON.stringify(result, null, 2)}
-                    </pre>
+                <div className="mt-6 p-4 border rounded-xl bg-gray-50">
+                    <h3 className="font-semibold mb-2">Result:</h3>
+
+                    <div className="space-y-2">
+                        <div>Sentiment: <b>{result.sentiment_pred_label}</b></div>
+                        <div>Topic: <b>{result.topic_pred_label}</b></div>
+                    </div>
                 </div>
             )}
         </div>

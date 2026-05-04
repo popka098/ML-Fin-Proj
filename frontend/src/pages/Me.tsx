@@ -21,18 +21,26 @@ export default function Me() {
 
     console.log("USER:", user);
     return (
-        <div>
-            <h1>{user.email}</h1>
-            <h2>Crystals: {user.crystals}</h2>
+        <div className="max-w-xl mx-auto mt-10 px-4">
+            <h1 className="text-2xl font-bold mb-4">{user.email}</h1>
+
+            <div className="mb-4">
+                💎 Crystals: <b>{user.crystals}</b>
+            </div>
+
             <input
                 type="range"
                 min={1}
                 max={100}
                 onChange={(e) => setAmount(Number(e.target.value))}
+                className="w-full"
             />
-            <div>Amount: {amount}</div>
-            <button onClick={handleAdd}>Add Crystals</button>
-            <button onClick={handleLogout}>Logout</button>
+
+            <div className="mt-2">Amount: {amount}</div>
+
+            <button onClick={handleAdd} className="mt-4 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+                Add Crystals
+            </button>
         </div>
     );
 }
