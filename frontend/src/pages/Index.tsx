@@ -29,7 +29,7 @@ export default function Index() {
     };
 
     return (
-        <div className="max-w-3xl mx-auto mt-10 px-4">
+        <div className="w-full max-w-3xl mx-auto mt-10 px-4">
             <h1 className="text-3xl font-bold mb-6">Text analysis</h1>
 
             <textarea
