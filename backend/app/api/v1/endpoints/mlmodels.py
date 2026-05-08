@@ -2,11 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.user import User
-from api.deps import get_current_user, get_db
+from api.deps import get_current_user, get_db, translator_service
 
 from services.embeddingtransformer import EmbeddingTransformer
 from services.sentiment_predict import sentiment_predict
 from services.topic_predict import topic_predict
+from services.language_service import LanguageService
 
 router = APIRouter(prefix="/mlmomdels", tags=["mlmodels"])
 SENTIMENT_REQUEST_PRICE = 1
@@ -56,6 +57,12 @@ async def get_all_preds(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
+    lang = LanguageService.detect_language(text)
+    if lang != "ru" and lang != "en":
+        raise HTTPException(400, detail=f"{lang} language is not supported")
+    if lang == "ru":
+        text = translator_service.ru_to_en(text)
+
     total_price = sum([
         SENTIMENT_REQUEST_PRICE,
         TOPIC_REQUEST_PRICE,

@@ -9,7 +9,11 @@ from models.user import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
+from services.translator import TranslatorService
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
+translator_service = TranslatorService()
 
 async def get_db():
     async with AsyncSessionLocal() as session:
