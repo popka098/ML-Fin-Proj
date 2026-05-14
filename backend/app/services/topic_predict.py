@@ -9,7 +9,8 @@ from services.embeddingtransformer import EmbeddingTransformer
 sys.modules['__main__'].EmbeddingTransformer = EmbeddingTransformer
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
-MODELS_DIR = BASE_DIR / "models"
+# MODELS_DIR = BASE_DIR / "models"
+MODELS_DIR = Path("/app/models")
 
 VER = ""
 model = joblib.load(MODELS_DIR / f"topic_model{VER}.pkl")

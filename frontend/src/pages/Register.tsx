@@ -63,6 +63,12 @@ export default function Register() {
                         onChange={(e) => setPassword(e.target.value)}
                         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    <input
+                        // type="password"
+                        placeholder="Confirm"
+                        onChange={(e) => setConfirm(e.target.value)}
+                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
 
                     <button 
                         onClick={handleRegister}
