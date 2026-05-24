@@ -1,5 +1,7 @@
  ML Project
 
+[links list](./links.md)
+
 ## About the Project
 
 This project is a full-stack application that combines a machine learning backend with a modern frontend interface.
