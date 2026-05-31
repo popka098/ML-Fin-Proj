@@ -20,7 +20,7 @@ The main idea of the project is to allow users to interact with ML models throug
 
 Download the required machine learning models from the [provided link](https://drive.google.com/drive/folders/1U-tAaQv6oYfr371B6nvL_BJ53CmMz0EZ?usp=drive_link) and place them into the following directory:
 
-backend/app/models/
+models/
 
 > Make sure the directory structure matches what the backend expects.
 
