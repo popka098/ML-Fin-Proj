@@ -2,3 +2,4 @@
  - [topic model notebook](https://colab.research.google.com/drive/1mMCPPs-PgOlJ3Nw-iUDEIMGq_U98YbUJ?usp=sharing)
  - [sentiment model](https://drive.google.com/file/d/10r2r9cjAnjs58YeVoLVLqKm3nNYGwFtO/view?usp=drive_link)
  - [topic model](https://drive.google.com/file/d/1TSmFd20AMt2hESCNZKRksFvtw1XbBjrD/view?usp=drive_link)
+ - [presentation](https://drive.google.com/file/d/1TSmFd20AMt2hESCNZKRksFvtw1XbBjrD/view?usp=drive_link)
